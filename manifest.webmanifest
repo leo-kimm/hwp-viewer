@@ -1,0 +1,27 @@
+{
+  "name": "HWP/HWPX 뷰어",
+  "short_name": "HWP 뷰어",
+  "description": "기기에서 문서를 처리하는 오프라인 HWP/HWPX 뷰어",
+  "lang": "ko",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#38598b",
+  "background_color": "#f1f5f9",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

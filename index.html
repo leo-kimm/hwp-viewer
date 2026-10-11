@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#38598b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="HWP/HWPX 뷰어">
+  <meta name="description" content="문서를 기기에서만 처리하는 HWP/HWPX 뷰어">
+  <title>HWP/HWPX 뷰어</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <style>
+    :root {
+      color-scheme: light;
+      background: #f1f5f9;
+      color: #0f172a;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      --toolbar-height: 58px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #e5e7eb;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    #start-screen {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: max(28px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom));
+      background: linear-gradient(160deg, #eff6ff 0%, #f8fafc 48%, #e2e8f0 100%);
+    }
+
+    .start-card {
+      width: min(100%, 480px);
+      padding: 32px 24px;
+      border: 1px solid rgb(148 163 184 / 32%);
+      border-radius: 24px;
+      background: rgb(255 255 255 / 94%);
+      box-shadow: 0 18px 50px rgb(15 23 42 / 12%);
+      text-align: center;
+    }
+
+    .app-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgb(56 89 139 / 24%);
+    }
+
+    h1 {
+      margin: 20px 0 10px;
+      font-size: clamp(26px, 7vw, 34px);
+      line-height: 1.2;
+    }
+
+    .privacy-copy {
+      margin: 0 auto 24px;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .primary-button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 14px;
+      background: #38598b;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary-button:disabled {
+      cursor: wait;
+      opacity: 0.55;
+    }
+
+    #start-message {
+      min-height: 22px;
+      margin: 14px 0 0;
+      color: #475569;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    #start-message.error {
+      color: #b91c1c;
+    }
+
+    .install-help {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #e2e8f0;
+      color: #334155;
+      text-align: left;
+    }
+
+    .install-help summary {
+      cursor: pointer;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .install-help ol {
+      margin: 14px 0 10px;
+      padding-left: 24px;
+      line-height: 1.7;
+    }
+
+    .install-help p {
+      margin: 10px 0 0;
+      color: #64748b;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    #viewer-toolbar {
+      position: sticky;
+      z-index: 40;
+      top: 0;
+      min-height: calc(var(--toolbar-height) + env(safe-area-inset-top));
+      padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right)) 0 max(8px, env(safe-area-inset-left));
+      background: rgb(248 250 252 / 96%);
+      border-bottom: 1px solid #cbd5e1;
+      box-shadow: 0 1px 8px rgb(15 23 42 / 10%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .toolbar-row {
+      height: var(--toolbar-height);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #document-title {
+      min-width: 0;
+      flex: 1;
+      padding: 0 8px;
+      overflow: hidden;
+      font-size: 16px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .toolbar-button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: #1e3a5f;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .toolbar-button:active {
+      background: #dbeafe;
+    }
+
+    .toolbar-button:disabled {
+      color: #94a3b8;
+      cursor: default;
+    }
+
+    #search-input {
+      min-width: 0;
+      flex: 1;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid #94a3b8;
+      border-radius: 12px;
+      background: #fff;
+      color: #0f172a;
+      outline: none;
+    }
+
+    #search-input:focus {
+      border-color: #38598b;
+      box-shadow: 0 0 0 3px rgb(56 89 139 / 15%);
+    }
+
+    #search-result {
+      max-width: 112px;
+      color: #334155;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #render-progress {
+      display: block;
+      width: 100%;
+      height: 3px;
+      border: 0;
+      accent-color: #38598b;
+    }
+
+    #status {
+      position: sticky;
+      z-index: 30;
+      top: calc(var(--toolbar-height) + env(safe-area-inset-top));
+      padding: 10px 14px;
+      background: #f8fafc;
+      color: #334155;
+      border-bottom: 1px solid #cbd5e1;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    #status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+
+    #pages {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 12px max(12px, env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    }
+
+    .page {
+      width: min(100%, 900px);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 4px rgb(15 23 42 / 18%);
+    }
+
+    .page.placeholder {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 210 / 297;
+      color: #64748b;
+    }
+
+    .placeholder-label {
+      font-size: 14px;
+    }
+
+    .page.page-error {
+      min-height: 180px;
+      padding: 24px;
+      color: #991b1b;
+      overflow-wrap: anywhere;
+    }
+
+    #page-indicator {
+      position: fixed;
+      z-index: 35;
+      left: 50%;
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgb(15 23 42 / 78%);
+      color: #fff;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 2px 8px rgb(15 23 42 / 24%);
+      pointer-events: none;
+    }
+
+    #fast-scroller {
+      position: fixed;
+      z-index: 36;
+      top: calc(96px + env(safe-area-inset-top));
+      right: env(safe-area-inset-right);
+      bottom: calc(64px + env(safe-area-inset-bottom));
+      width: 40px;
+      touch-action: none;
+      user-select: none;
+    }
+
+    #fast-scroll-thumb {
+      position: absolute;
+      top: 0;
+      right: 4px;
+      width: 16px;
+      height: 64px;
+      border-radius: 999px;
+      background: #475569;
+      opacity: 0.58;
+      transition: opacity 120ms ease;
+      pointer-events: none;
+    }
+
+    #fast-scroller.dragging #fast-scroll-thumb {
+      opacity: 0.92;
+    }
+
+    body.fast-scrolling {
+      user-select: none;
+    }
+
+    .page svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 430px) {
+      #search-result {
+        max-width: 76px;
+        font-size: 11px;
+      }
+
+      .toolbar-button {
+        padding: 0 7px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section id="start-screen">
+    <div class="start-card">
+      <img class="app-mark" src="./icons/icon-192.png" alt="" width="72" height="72">
+      <h1>HWP/HWPX 뷰어</h1>
+      <p class="privacy-copy">문서는 기기에서만 처리되며 서버로 전송되지 않습니다.</p>
+      <button id="start-open-button" class="primary-button" type="button" disabled>HWP/HWPX 파일 열기</button>
+      <p id="start-message" role="status" aria-live="polite">렌더링 엔진을 준비하고 있습니다.</p>
+      <details class="install-help">
+        <summary>iPhone 설치 방법</summary>
+        <ol>
+          <li>Safari에서 이 페이지를 엽니다.</li>
+          <li>공유 버튼을 누릅니다.</li>
+          <li>‘홈 화면에 추가’를 선택합니다.</li>
+          <li>추가된 HWP/HWPX 뷰어를 실행합니다.</li>
+        </ol>
+        <p>오프라인 사용을 위해 설치 후 한 번 앱을 실행해 주세요.</p>
+      </details>
+    </div>
+  </section>
+
+  <input id="document-input" type="file" accept=".hwp,.hwpx" hidden>
+
+  <header id="viewer-toolbar" hidden>
+    <div id="document-toolbar" class="toolbar-row">
+      <div id="document-title">HWP/HWPX 뷰어</div>
+      <button id="open-another-button" class="toolbar-button" type="button">다른 파일</button>
+      <button id="open-search-button" class="toolbar-button" type="button" disabled>검색</button>
+    </div>
+    <div id="search-toolbar" class="toolbar-row" hidden>
+      <input id="search-input" type="search" inputmode="search" autocomplete="off" placeholder="문서 검색" aria-label="문서 검색">
+      <span id="search-result" aria-live="polite"></span>
+      <button id="previous-match-button" class="toolbar-button" type="button" aria-label="이전 검색 결과" disabled>이전</button>
+      <button id="next-match-button" class="toolbar-button" type="button" aria-label="다음 검색 결과" disabled>다음</button>
+      <button id="close-search-button" class="toolbar-button" type="button" aria-label="검색 닫기">닫기</button>
+    </div>
+    <progress id="render-progress" aria-label="문서 렌더링 진행률" hidden></progress>
+  </header>
+
+  <div id="status" role="status" aria-live="polite" hidden></div>
+  <main id="pages"></main>
+  <div id="page-indicator" aria-live="polite" hidden></div>
+  <div id="fast-scroller" aria-label="페이지 빠른 이동" hidden>
+    <div id="fast-scroll-thumb"></div>
+  </div>
+
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>
