@@ -1,15 +1,15 @@
 {
-  "name": "HWP/HWPX 뷰어",
-  "short_name": "HWP 뷰어",
-  "description": "기기에서 문서를 처리하는 오프라인 HWP/HWPX 뷰어",
+  "name": "쿄쿄뷰어",
+  "short_name": "쿄쿄뷰어",
+  "description": "기기에서 안전하게 문서를 처리하는 HWP·HWPX 뷰어",
   "lang": "ko",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "theme_color": "#38598b",
-  "background_color": "#f1f5f9",
+  "theme_color": "#eaf6ff",
+  "background_color": "#f7fcff",
   "icons": [
     {
       "src": "./icons/icon-192.png",

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">쿄쿄뷰어 앱 아이콘</title>
+  <desc id="desc">하늘색 배경에서 문서를 안고 있는 흰 구름 여우</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8fd3ff"/><stop offset="1" stop-color="#4ea8f7"/></linearGradient>
+    <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffef8"/><stop offset="1" stop-color="#eaf7ff"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <circle cx="74" cy="88" r="30" fill="#fff" opacity=".45"/><circle cx="105" cy="95" r="42" fill="#fff" opacity=".45"/><circle cx="143" cy="97" r="27" fill="#fff" opacity=".45"/>
+  <circle cx="387" cy="396" r="35" fill="#fff" opacity=".32"/><circle cx="427" cy="390" r="48" fill="#fff" opacity=".32"/>
+  <path d="m120 218-18-75 57 34c28-20 67-31 102-31 37 0 74 12 101 33l57-36-18 77c17 25 26 54 26 85 0 89-71 148-168 148-99 0-174-62-174-151 0-31 12-61 35-84Z" fill="url(#cream)" stroke="#1d78d3" stroke-width="12" stroke-linejoin="round"/>
+  <path d="m122 188-6-26 27 18m257 8 6-26-28 18" fill="none" stroke="#91cbf4" stroke-width="14" stroke-linecap="round"/>
+  <ellipse cx="174" cy="281" rx="25" ry="14" fill="#ffd2e1"/><ellipse cx="343" cy="281" rx="25" ry="14" fill="#ffd2e1"/>
+  <ellipse cx="199" cy="251" rx="10" ry="16" fill="#3487c8"/><ellipse cx="319" cy="251" rx="10" ry="16" fill="#3487c8"/>
+  <path d="m245 271 14 8 14-8m-14 8c0 13-11 21-25 21m25-21c0 13 11 21 25 21" fill="none" stroke="#276ead" stroke-width="9" stroke-linecap="round"/>
+  <path d="m250 180 9-19 9 19 20 8-20 9-9 19-9-19-20-9Z" fill="#fff2a8" stroke="#ecc246" stroke-width="6" stroke-linejoin="round"/>
+  <rect x="205" y="308" width="111" height="126" rx="10" fill="#fff" stroke="#1d78d3" stroke-width="10"/>
+  <path d="m285 308 31 31h-31Z" fill="#cfedff" stroke="#1d78d3" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M229 354h60m-60 25h60m-60 25h44" fill="none" stroke="#8dccf5" stroke-width="9" stroke-linecap="round"/>
+  <path d="M204 351c-23-8-42 5-40 24 2 19 20 28 42 22m112-46c23-8 42 5 40 24-2 19-20 28-42 22" fill="url(#cream)" stroke="#1d78d3" stroke-width="10" stroke-linecap="round"/>
+  <path d="m72 355 9-19 9 19 20 8-20 9-9 19-9-19-20-9Z" fill="#fff5ae" stroke="#f0ca51" stroke-width="5" stroke-linejoin="round"/>
+</svg>

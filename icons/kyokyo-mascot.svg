@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 208" role="img" aria-labelledby="title desc">
+  <title id="title">쿄쿄뷰어 마스코트 쿄쿄</title>
+  <desc id="desc">작은 문서를 안고 있는 구름 여우 모양의 캐릭터</desc>
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffef9"/>
+      <stop offset="1" stop-color="#eef8ff"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9f7ff"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 156c-15 0-26-8-26-19 0-10 9-18 22-19 2-15 16-26 34-26 19 0 34 13 34 29 0 19-18 35-42 35Z" fill="#fff" stroke="#b8e2ff" stroke-width="3"/>
+    <path d="M229 150c-12 0-21-7-21-16 0-8 7-14 17-15 2-12 13-20 27-20 15 0 27 10 27 23 0 15-14 28-33 28Z" fill="#fff" stroke="#b8e2ff" stroke-width="3"/>
+    <path d="m65 71 7 4 7-4-2 8 6 5-8 1-3 8-3-8-8-1 6-5Z" fill="#fff6bd" stroke="#f5c94d" stroke-width="2"/>
+    <path d="m245 57 5 3 6-3-2 6 5 4-6 1-3 6-2-6-7-1 5-4Z" fill="#fff6bd" stroke="#f5c94d" stroke-width="2"/>
+    <path d="M106 69 96 30l31 19c10-6 21-9 33-9 13 0 25 3 35 10l31-20-10 40c9 11 14 24 14 39 0 38-31 64-70 64-40 0-71-27-71-64 0-15 6-29 17-40Z" fill="url(#body)" stroke="#2587e8" stroke-width="4"/>
+    <path d="m104 55-3-15 14 10m101 5 3-15-14 10" stroke="#9bd4ff" stroke-width="5"/>
+    <path d="M111 146c-7 4-12 12-12 21 0 12 10 21 23 21 10 0 18-5 22-13m65-29c8 4 13 12 13 21 0 12-10 21-23 21-10 0-18-5-22-13" fill="url(#body)" stroke="#2587e8" stroke-width="4"/>
+    <path d="M116 159c-18 1-29 8-29 18 0 9 10 15 25 15m92-33c18 1 29 8 29 18 0 9-10 15-25 15" fill="url(#body)" stroke="#2587e8" stroke-width="4"/>
+    <path d="M139 93c0 5-3 9-7 9s-7-4-7-9 3-9 7-9 7 4 7 9Zm56 0c0 5-3 9-7 9s-7-4-7-9 3-9 7-9 7 4 7 9Z" fill="#408dcc" stroke="none"/>
+    <ellipse cx="113" cy="112" rx="13" ry="7" fill="#ffd2e1" stroke="none" opacity=".85"/>
+    <ellipse cx="207" cy="112" rx="13" ry="7" fill="#ffd2e1" stroke="none" opacity=".85"/>
+    <path d="m152 105 8 5 8-5" stroke="#2b72b8" stroke-width="4"/>
+    <path d="M160 110c0 8-7 13-15 13m15-13c0 8 7 13 15 13" stroke="#2b72b8" stroke-width="3"/>
+    <path d="m155 55 5-10 5 10 10 4-10 5-5 10-5-10-10-5Z" fill="#fff4a9" stroke="#f0c84d" stroke-width="2.5"/>
+    <path d="M132 125h57v61h-57Z" fill="url(#paper)" stroke="#2587e8" stroke-width="4"/>
+    <path d="m176 125 13 13h-13Z" fill="#cfeeff" stroke="#2587e8" stroke-width="3"/>
+    <path d="M144 145h31m-31 12h31m-31 12h22" stroke="#8fcfff" stroke-width="4"/>
+    <path d="M128 143c-8-3-15 1-16 8-1 8 7 13 18 12m62-20c8-3 15 1 16 8 1 8-7 13-18 12" fill="url(#body)" stroke="#2587e8" stroke-width="4"/>
+  </g>
+</svg>

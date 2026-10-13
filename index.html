@@ -3,388 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
-  <meta name="theme-color" content="#38598b">
+  <meta name="theme-color" content="#eaf6ff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="HWP/HWPX 뷰어">
-  <meta name="description" content="문서를 기기에서만 처리하는 HWP/HWPX 뷰어">
-  <title>HWP/HWPX 뷰어</title>
+  <meta name="apple-mobile-web-app-title" content="쿄쿄뷰어">
+  <meta name="description" content="기기에서 안전하게 문서를 처리하는 HWP·HWPX 뷰어">
+  <title>쿄쿄뷰어</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-  <style>
-    :root {
-      color-scheme: light;
-      background: #f1f5f9;
-      color: #0f172a;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-      --toolbar-height: 58px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      background: #e5e7eb;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    html::-webkit-scrollbar,
-    body::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    #start-screen {
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: max(28px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom));
-      background: linear-gradient(160deg, #eff6ff 0%, #f8fafc 48%, #e2e8f0 100%);
-    }
-
-    .start-card {
-      width: min(100%, 480px);
-      padding: 32px 24px;
-      border: 1px solid rgb(148 163 184 / 32%);
-      border-radius: 24px;
-      background: rgb(255 255 255 / 94%);
-      box-shadow: 0 18px 50px rgb(15 23 42 / 12%);
-      text-align: center;
-    }
-
-    .app-mark {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgb(56 89 139 / 24%);
-    }
-
-    h1 {
-      margin: 20px 0 10px;
-      font-size: clamp(26px, 7vw, 34px);
-      line-height: 1.2;
-    }
-
-    .privacy-copy {
-      margin: 0 auto 24px;
-      color: #475569;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .primary-button {
-      width: 100%;
-      min-height: 52px;
-      border: 0;
-      border-radius: 14px;
-      background: #38598b;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .primary-button:disabled {
-      cursor: wait;
-      opacity: 0.55;
-    }
-
-    #start-message {
-      min-height: 22px;
-      margin: 14px 0 0;
-      color: #475569;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    #start-message.error {
-      color: #b91c1c;
-    }
-
-    .install-help {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid #e2e8f0;
-      color: #334155;
-      text-align: left;
-    }
-
-    .install-help summary {
-      cursor: pointer;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .install-help ol {
-      margin: 14px 0 10px;
-      padding-left: 24px;
-      line-height: 1.7;
-    }
-
-    .install-help p {
-      margin: 10px 0 0;
-      color: #64748b;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    #viewer-toolbar {
-      position: sticky;
-      z-index: 40;
-      top: 0;
-      min-height: calc(var(--toolbar-height) + env(safe-area-inset-top));
-      padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right)) 0 max(8px, env(safe-area-inset-left));
-      background: rgb(248 250 252 / 96%);
-      border-bottom: 1px solid #cbd5e1;
-      box-shadow: 0 1px 8px rgb(15 23 42 / 10%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .toolbar-row {
-      height: var(--toolbar-height);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    #document-title {
-      min-width: 0;
-      flex: 1;
-      padding: 0 8px;
-      overflow: hidden;
-      font-size: 16px;
-      font-weight: 700;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .toolbar-button {
-      min-width: 44px;
-      min-height: 44px;
-      padding: 0 10px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
-      color: #1e3a5f;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .toolbar-button:active {
-      background: #dbeafe;
-    }
-
-    .toolbar-button:disabled {
-      color: #94a3b8;
-      cursor: default;
-    }
-
-    #search-input {
-      min-width: 0;
-      flex: 1;
-      height: 42px;
-      padding: 0 12px;
-      border: 1px solid #94a3b8;
-      border-radius: 12px;
-      background: #fff;
-      color: #0f172a;
-      outline: none;
-    }
-
-    #search-input:focus {
-      border-color: #38598b;
-      box-shadow: 0 0 0 3px rgb(56 89 139 / 15%);
-    }
-
-    #search-result {
-      max-width: 112px;
-      color: #334155;
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    #render-progress {
-      display: block;
-      width: 100%;
-      height: 3px;
-      border: 0;
-      accent-color: #38598b;
-    }
-
-    #status {
-      position: sticky;
-      z-index: 30;
-      top: calc(var(--toolbar-height) + env(safe-area-inset-top));
-      padding: 10px 14px;
-      background: #f8fafc;
-      color: #334155;
-      border-bottom: 1px solid #cbd5e1;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    #status.error {
-      background: #fee2e2;
-      color: #991b1b;
-      border-color: #fca5a5;
-    }
-
-    #pages {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 12px max(12px, env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-    }
-
-    .page {
-      width: min(100%, 900px);
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 1px 4px rgb(15 23 42 / 18%);
-    }
-
-    .page.placeholder {
-      display: grid;
-      place-items: center;
-      aspect-ratio: 210 / 297;
-      color: #64748b;
-    }
-
-    .placeholder-label {
-      font-size: 14px;
-    }
-
-    .page.page-error {
-      min-height: 180px;
-      padding: 24px;
-      color: #991b1b;
-      overflow-wrap: anywhere;
-    }
-
-    #page-indicator {
-      position: fixed;
-      z-index: 35;
-      left: 50%;
-      bottom: calc(14px + env(safe-area-inset-bottom));
-      transform: translateX(-50%);
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgb(15 23 42 / 78%);
-      color: #fff;
-      font-size: 13px;
-      font-variant-numeric: tabular-nums;
-      box-shadow: 0 2px 8px rgb(15 23 42 / 24%);
-      pointer-events: none;
-    }
-
-    #fast-scroller {
-      position: fixed;
-      z-index: 36;
-      top: calc(96px + env(safe-area-inset-top));
-      right: env(safe-area-inset-right);
-      bottom: calc(64px + env(safe-area-inset-bottom));
-      width: 40px;
-      touch-action: none;
-      user-select: none;
-    }
-
-    #fast-scroll-thumb {
-      position: absolute;
-      top: 0;
-      right: 4px;
-      width: 16px;
-      height: 64px;
-      border-radius: 999px;
-      background: #475569;
-      opacity: 0.58;
-      transition: opacity 120ms ease;
-      pointer-events: none;
-    }
-
-    #fast-scroller.dragging #fast-scroll-thumb {
-      opacity: 0.92;
-    }
-
-    body.fast-scrolling {
-      user-select: none;
-    }
-
-    .page svg {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    @media (max-width: 430px) {
-      #search-result {
-        max-width: 76px;
-        font-size: 11px;
-      }
-
-      .toolbar-button {
-        padding: 0 7px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <section id="start-screen">
-    <div class="start-card">
-      <img class="app-mark" src="./icons/icon-192.png" alt="" width="72" height="72">
-      <h1>HWP/HWPX 뷰어</h1>
-      <p class="privacy-copy">문서는 기기에서만 처리되며 서버로 전송되지 않습니다.</p>
-      <button id="start-open-button" class="primary-button" type="button" disabled>HWP/HWPX 파일 열기</button>
-      <p id="start-message" role="status" aria-live="polite">렌더링 엔진을 준비하고 있습니다.</p>
+    <main class="home-shell">
+      <header class="brand-hero">
+        <span class="cloud cloud-left" aria-hidden="true"></span>
+        <span class="cloud cloud-right" aria-hidden="true"></span>
+        <img class="brand-mascot" src="./icons/kyokyo-mascot.svg" alt="문서를 안고 있는 구름 동물 쿄쿄" width="240" height="156">
+        <h1>쿄쿄뷰어</h1>
+        <p>HWP · HWPX 문서를 가볍게 열어보세요</p>
+      </header>
+
+      <button id="start-open-button" class="open-document-card" type="button" disabled>
+        <span class="folder-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="img">
+            <path d="M5 13a5 5 0 0 1 5-5h10l5 6h13a5 5 0 0 1 5 5v18a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5Z" fill="#fff1ad"/>
+            <path d="M7 19h34l-4 20H11Z" fill="#fff8d6"/>
+            <circle cx="36" cy="35" r="8" fill="#fff"/>
+            <path d="M36 31v8m-4-4h8" stroke="#3497f6" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="open-copy">
+          <strong>문서 열기</strong>
+          <small>HWP 또는 HWPX 파일을 선택하세요</small>
+        </span>
+        <span class="open-chevron" aria-hidden="true">›</span>
+      </button>
+      <p class="device-privacy"><span aria-hidden="true">▣</span> 문서는 이 기기에서만 처리됩니다.</p>
+      <p id="start-message" role="status" aria-live="polite">문서 엔진을 준비하고 있어요…</p>
+
+      <section class="recent-section" aria-labelledby="recent-heading">
+        <div class="recent-heading-row">
+          <h2 id="recent-heading">최근 열어본 문서</h2>
+          <button id="clear-recents-button" class="text-button" type="button" hidden>모두 지우기</button>
+        </div>
+        <p class="recent-privacy">최근 문서는 이 기기에만 저장됩니다. 기기 저장 공간 상황에 따라 사라질 수 있어요.</p>
+
+        <div id="recent-error" class="recent-error" role="alert" hidden>
+          <div>
+            <strong>이 문서를 다시 열 수 없어요.</strong>
+            <p id="recent-error-message">저장된 문서가 손상되었을 수 있습니다.</p>
+          </div>
+          <button id="delete-corrupt-recent-button" type="button">최근 목록에서 삭제</button>
+        </div>
+
+        <div id="recent-list" class="recent-list" aria-live="polite"></div>
+        <div id="recent-empty-state" class="empty-state">
+          <img src="./icons/kyokyo-mascot.svg" alt="" width="148" height="96">
+          <strong>아직 열어본 문서가 없어요.</strong>
+          <p>문서를 열면 여기에 바로 나타납니다.</p>
+        </div>
+      </section>
+
       <details class="install-help">
-        <summary>iPhone 설치 방법</summary>
+        <summary>iPhone 홈 화면에 설치하기</summary>
         <ol>
-          <li>Safari에서 이 페이지를 엽니다.</li>
+          <li>Safari에서 쿄쿄뷰어를 엽니다.</li>
           <li>공유 버튼을 누릅니다.</li>
           <li>‘홈 화면에 추가’를 선택합니다.</li>
-          <li>추가된 HWP/HWPX 뷰어를 실행합니다.</li>
+          <li>추가된 쿄쿄뷰어를 실행합니다.</li>
         </ol>
-        <p>오프라인 사용을 위해 설치 후 한 번 앱을 실행해 주세요.</p>
+        <p>오프라인 사용을 위해 설치 후 온라인 상태에서 한 번 실행해 주세요.</p>
       </details>
-    </div>
+    </main>
   </section>
 
   <input id="document-input" type="file" accept=".hwp,.hwpx" hidden>
 
   <header id="viewer-toolbar" hidden>
     <div id="document-toolbar" class="toolbar-row">
-      <div id="document-title">HWP/HWPX 뷰어</div>
+      <button id="home-button" class="toolbar-button icon-button" type="button" aria-label="홈으로 돌아가기">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4l8 7.2v8.3a.5.5 0 0 1-.5.5h-5v-6h-5v6h-5a.5.5 0 0 1-.5-.5Z"/></svg>
+      </button>
+      <img class="toolbar-brand" src="./icons/kyokyo-mascot.svg" alt="" width="34" height="28">
+      <div id="document-title" title="">쿄쿄뷰어</div>
       <button id="open-another-button" class="toolbar-button" type="button">다른 파일</button>
-      <button id="open-search-button" class="toolbar-button" type="button" disabled>검색</button>
+      <button id="open-search-button" class="toolbar-button icon-button" type="button" aria-label="문서 검색" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+      </button>
     </div>
     <div id="search-toolbar" class="toolbar-row" hidden>
-      <input id="search-input" type="search" inputmode="search" autocomplete="off" placeholder="문서 검색" aria-label="문서 검색">
+      <label class="search-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+        <input id="search-input" type="search" inputmode="search" autocomplete="off" placeholder="검색어 입력" aria-label="문서 검색">
+      </label>
       <span id="search-result" aria-live="polite"></span>
-      <button id="previous-match-button" class="toolbar-button" type="button" aria-label="이전 검색 결과" disabled>이전</button>
-      <button id="next-match-button" class="toolbar-button" type="button" aria-label="다음 검색 결과" disabled>다음</button>
+      <button id="previous-match-button" class="toolbar-button icon-button" type="button" aria-label="이전 검색 결과" disabled>⌃</button>
+      <button id="next-match-button" class="toolbar-button icon-button" type="button" aria-label="다음 검색 결과" disabled>⌄</button>
       <button id="close-search-button" class="toolbar-button" type="button" aria-label="검색 닫기">닫기</button>
     </div>
     <progress id="render-progress" aria-label="문서 렌더링 진행률" hidden></progress>
@@ -394,7 +109,40 @@
   <main id="pages"></main>
   <div id="page-indicator" aria-live="polite" hidden></div>
   <div id="fast-scroller" aria-label="페이지 빠른 이동" hidden>
-    <div id="fast-scroll-thumb"></div>
+    <div id="fast-scroll-thumb">
+      <img src="./icons/kyokyo-mascot.svg" alt="" width="32" height="26">
+    </div>
+  </div>
+
+  <div id="recent-action-sheet" class="modal-layer" hidden>
+    <div class="modal-scrim" data-close-modal></div>
+    <section class="action-sheet" role="dialog" aria-modal="true" aria-labelledby="action-document-name">
+      <div class="action-document-summary">
+        <span id="action-document-badge" class="file-badge">HWPX</span>
+        <div>
+          <strong id="action-document-name"></strong>
+          <span id="action-document-meta"></span>
+        </div>
+      </div>
+      <button id="action-open-button" class="sheet-button" type="button">이 문서 열기</button>
+      <button id="action-delete-button" class="sheet-button destructive" type="button">최근 목록에서 삭제</button>
+      <button class="sheet-button cancel" type="button" data-close-modal>취소</button>
+    </section>
+  </div>
+
+  <div id="confirm-modal" class="modal-layer" hidden>
+    <div class="modal-scrim" data-close-modal></div>
+    <section class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+      <div class="delete-symbol" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16m-10 4v6m4-6v6M8 7l1-3h6l1 3m2 0-1 14H7L6 7"/></svg>
+      </div>
+      <h2 id="confirm-title">최근 문서를 지울까요?</h2>
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel-button" type="button">취소</button>
+        <button id="confirm-accept-button" class="destructive" type="button">삭제</button>
+      </div>
+    </section>
   </div>
 
   <script type="module" src="./viewer.js"></script>

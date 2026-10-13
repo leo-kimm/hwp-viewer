@@ -1,13 +1,17 @@
 const CACHE_PREFIX = 'hwp-viewer-';
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const APP_ASSETS = [
   './',
   './index.html',
+  './styles.css',
   './viewer.js',
   './search_index.js',
+  './recent_documents.js',
   './rhwp.js',
   './rhwp_bg.wasm',
   './manifest.webmanifest',
+  './icons/kyokyo-mascot.svg',
+  './icons/icon-source.svg',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
