@@ -19,6 +19,8 @@
       <header class="brand-hero">
         <span class="cloud cloud-left" aria-hidden="true"></span>
         <span class="cloud cloud-right" aria-hidden="true"></span>
+        <span class="hero-sparkle sparkle-left" aria-hidden="true">✦</span>
+        <span class="hero-sparkle sparkle-right" aria-hidden="true">✧</span>
         <img class="brand-mascot" src="./icons/kyokyo-mascot.svg" alt="문서를 안고 있는 구름 동물 쿄쿄" width="240" height="156">
         <h1>쿄쿄뷰어</h1>
         <p>HWP · HWPX 문서를 가볍게 열어보세요</p>
@@ -39,7 +41,10 @@
         </span>
         <span class="open-chevron" aria-hidden="true">›</span>
       </button>
-      <p class="device-privacy"><span aria-hidden="true">▣</span> 문서는 이 기기에서만 처리됩니다.</p>
+      <p class="device-privacy">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 8V6.3a3.5 3.5 0 0 1 7 0V8M5 8h10v8H5Z"/></svg>
+        문서는 이 기기에서만 처리됩니다.
+      </p>
       <p id="start-message" role="status" aria-live="polite">문서 엔진을 준비하고 있어요…</p>
 
       <section class="recent-section" aria-labelledby="recent-heading">
@@ -62,6 +67,7 @@
           <img src="./icons/kyokyo-mascot.svg" alt="" width="148" height="96">
           <strong>아직 열어본 문서가 없어요.</strong>
           <p>문서를 열면 여기에 바로 나타납니다.</p>
+          <button id="empty-open-button" class="empty-open-button" type="button">문서 열기</button>
         </div>
       </section>
 
@@ -85,8 +91,10 @@
       <button id="home-button" class="toolbar-button icon-button" type="button" aria-label="홈으로 돌아가기">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4l8 7.2v8.3a.5.5 0 0 1-.5.5h-5v-6h-5v6h-5a.5.5 0 0 1-.5-.5Z"/></svg>
       </button>
-      <img class="toolbar-brand" src="./icons/kyokyo-mascot.svg" alt="" width="34" height="28">
-      <div id="document-title" title="">쿄쿄뷰어</div>
+      <div class="toolbar-document">
+        <img class="toolbar-brand" src="./icons/kyokyo-mascot.svg" alt="" width="36" height="30">
+        <div id="document-title" title="">쿄쿄뷰어</div>
+      </div>
       <button id="open-another-button" class="toolbar-button" type="button">다른 파일</button>
       <button id="open-search-button" class="toolbar-button icon-button" type="button" aria-label="문서 검색" disabled>
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
@@ -100,7 +108,7 @@
       <span id="search-result" aria-live="polite"></span>
       <button id="previous-match-button" class="toolbar-button icon-button" type="button" aria-label="이전 검색 결과" disabled>⌃</button>
       <button id="next-match-button" class="toolbar-button icon-button" type="button" aria-label="다음 검색 결과" disabled>⌄</button>
-      <button id="close-search-button" class="toolbar-button" type="button" aria-label="검색 닫기">닫기</button>
+      <button id="close-search-button" class="toolbar-button icon-button search-close" type="button" aria-label="검색 닫기">×</button>
     </div>
     <progress id="render-progress" aria-label="문서 렌더링 진행률" hidden></progress>
   </header>
@@ -118,14 +126,25 @@
     <div class="modal-scrim" data-close-modal></div>
     <section class="action-sheet" role="dialog" aria-modal="true" aria-labelledby="action-document-name">
       <div class="action-document-summary">
-        <span id="action-document-badge" class="file-badge">HWPX</span>
-        <div>
+        <span id="action-document-icon" class="document-icon" aria-hidden="true"></span>
+        <div class="action-document-copy">
           <strong id="action-document-name"></strong>
-          <span id="action-document-meta"></span>
+          <div class="action-document-stats">
+            <span id="action-document-badge" class="file-badge">HWPX</span>
+            <span id="action-document-meta"></span>
+          </div>
         </div>
       </div>
-      <button id="action-open-button" class="sheet-button" type="button">이 문서 열기</button>
-      <button id="action-delete-button" class="sheet-button destructive" type="button">최근 목록에서 삭제</button>
+      <div id="action-document-details" class="action-document-details" hidden></div>
+      <button id="action-open-button" class="sheet-button" type="button">
+        <span class="sheet-icon" aria-hidden="true">↗</span> 이 문서 열기
+      </button>
+      <button id="action-info-button" class="sheet-button" type="button">
+        <span class="sheet-icon info" aria-hidden="true">i</span> 문서 정보 보기
+      </button>
+      <button id="action-delete-button" class="sheet-button destructive" type="button">
+        <span class="sheet-icon" aria-hidden="true">⌫</span> 최근 목록에서 삭제
+      </button>
       <button class="sheet-button cancel" type="button" data-close-modal>취소</button>
     </section>
   </div>

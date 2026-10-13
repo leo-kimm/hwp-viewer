@@ -1,22 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">쿄쿄뷰어 앱 아이콘</title>
-  <desc id="desc">하늘색 배경에서 문서를 안고 있는 흰 구름 여우</desc>
+  <desc id="desc">하늘색 배경에서 둥근 구름 귀를 펼치고 문서를 안은 쿄쿄</desc>
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8fd3ff"/><stop offset="1" stop-color="#4ea8f7"/></linearGradient>
-    <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffef8"/><stop offset="1" stop-color="#eaf7ff"/></linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#89ceff"/><stop offset="1" stop-color="#58aff8"/></linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffef8"/><stop offset="1" stop-color="#edf8ff"/></linearGradient>
   </defs>
   <rect width="512" height="512" fill="url(#sky)"/>
-  <circle cx="74" cy="88" r="30" fill="#fff" opacity=".45"/><circle cx="105" cy="95" r="42" fill="#fff" opacity=".45"/><circle cx="143" cy="97" r="27" fill="#fff" opacity=".45"/>
-  <circle cx="387" cy="396" r="35" fill="#fff" opacity=".32"/><circle cx="427" cy="390" r="48" fill="#fff" opacity=".32"/>
-  <path d="m120 218-18-75 57 34c28-20 67-31 102-31 37 0 74 12 101 33l57-36-18 77c17 25 26 54 26 85 0 89-71 148-168 148-99 0-174-62-174-151 0-31 12-61 35-84Z" fill="url(#cream)" stroke="#1d78d3" stroke-width="12" stroke-linejoin="round"/>
-  <path d="m122 188-6-26 27 18m257 8 6-26-28 18" fill="none" stroke="#91cbf4" stroke-width="14" stroke-linecap="round"/>
-  <ellipse cx="174" cy="281" rx="25" ry="14" fill="#ffd2e1"/><ellipse cx="343" cy="281" rx="25" ry="14" fill="#ffd2e1"/>
-  <ellipse cx="199" cy="251" rx="10" ry="16" fill="#3487c8"/><ellipse cx="319" cy="251" rx="10" ry="16" fill="#3487c8"/>
-  <path d="m245 271 14 8 14-8m-14 8c0 13-11 21-25 21m25-21c0 13 11 21 25 21" fill="none" stroke="#276ead" stroke-width="9" stroke-linecap="round"/>
-  <path d="m250 180 9-19 9 19 20 8-20 9-9 19-9-19-20-9Z" fill="#fff2a8" stroke="#ecc246" stroke-width="6" stroke-linejoin="round"/>
-  <rect x="205" y="308" width="111" height="126" rx="10" fill="#fff" stroke="#1d78d3" stroke-width="10"/>
-  <path d="m285 308 31 31h-31Z" fill="#cfedff" stroke="#1d78d3" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M229 354h60m-60 25h60m-60 25h44" fill="none" stroke="#8dccf5" stroke-width="9" stroke-linecap="round"/>
-  <path d="M204 351c-23-8-42 5-40 24 2 19 20 28 42 22m112-46c23-8 42 5 40 24-2 19-20 28-42 22" fill="url(#cream)" stroke="#1d78d3" stroke-width="10" stroke-linecap="round"/>
-  <path d="m72 355 9-19 9 19 20 8-20 9-9 19-9-19-20-9Z" fill="#fff5ae" stroke="#f0ca51" stroke-width="5" stroke-linejoin="round"/>
+  <g fill="#fff" opacity=".48"><circle cx="56" cy="75" r="26"/><circle cx="88" cy="66" r="38"/><circle cx="124" cy="78" r="24"/><circle cx="398" cy="414" r="34"/><circle cx="440" cy="401" r="47"/></g>
+  <path d="M193 222c-41-34-87-43-118-21-27 19-23 52 5 64 27 11 63-9 96-9m143-34c41-34 87-43 118-21 27 19 23 52-5 64-27 11-63-9-96-9" fill="url(#body)" stroke="#237ed5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M171 232c0-70 38-115 85-115s85 45 85 115c0 67-39 116-85 116s-85-49-85-116Z" fill="url(#body)" stroke="#237ed5" stroke-width="11"/>
+  <path d="M235 125c5-29 34-41 54-21-18 3-27 13-28 28" fill="#fff8e1" stroke="#237ed5" stroke-width="8" stroke-linejoin="round"/>
+  <ellipse cx="221" cy="226" rx="10" ry="16" fill="#397fc0"/><ellipse cx="291" cy="226" rx="10" ry="16" fill="#397fc0"/>
+  <ellipse cx="193" cy="259" rx="24" ry="12" fill="#ffd6e7"/><ellipse cx="319" cy="259" rx="24" ry="12" fill="#ffd6e7"/>
+  <path d="m245 254 11 7 11-7m-11 7c0 13-11 20-24 20m24-20c0 13 11 20 24 20" fill="none" stroke="#286faa" stroke-width="8" stroke-linecap="round"/>
+  <path d="m248 158 8-18 8 18 18 8-18 8-8 18-8-18-18-8Z" fill="#fff1a3" stroke="#ecc247" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M205 316c-31 16-50 48-44 82 7 43 43 68 95 68s88-25 95-68c6-34-13-66-44-82" fill="url(#body)" stroke="#237ed5" stroke-width="11"/>
+  <rect x="204" y="309" width="104" height="130" rx="9" fill="#fff" stroke="#237ed5" stroke-width="10"/>
+  <path d="m280 309 28 28h-28Z" fill="#d6efff" stroke="#237ed5" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M226 352h57m-57 25h57m-57 25h40" fill="none" stroke="#91cdf4" stroke-width="9" stroke-linecap="round"/>
+  <path d="M203 350c-23-8-42 5-40 24 2 19 20 28 42 22m104-46c23-8 42 5 40 24-2 19-20 28-42 22" fill="url(#body)" stroke="#237ed5" stroke-width="10" stroke-linecap="round"/>
 </svg>

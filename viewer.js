@@ -21,6 +21,7 @@ const fastScrollerElement = document.getElementById('fast-scroller');
 const fastScrollThumbElement = document.getElementById('fast-scroll-thumb');
 const startScreenElement = document.getElementById('start-screen');
 const startOpenButton = document.getElementById('start-open-button');
+const emptyOpenButton = document.getElementById('empty-open-button');
 const startMessageElement = document.getElementById('start-message');
 const recentListElement = document.getElementById('recent-list');
 const recentEmptyStateElement = document.getElementById('recent-empty-state');
@@ -48,7 +49,9 @@ const recentActionSheet = document.getElementById('recent-action-sheet');
 const actionDocumentBadge = document.getElementById('action-document-badge');
 const actionDocumentName = document.getElementById('action-document-name');
 const actionDocumentMeta = document.getElementById('action-document-meta');
+const actionDocumentDetails = document.getElementById('action-document-details');
 const actionOpenButton = document.getElementById('action-open-button');
+const actionInfoButton = document.getElementById('action-info-button');
 const actionDeleteButton = document.getElementById('action-delete-button');
 const confirmModal = document.getElementById('confirm-modal');
 const confirmTitle = document.getElementById('confirm-title');
@@ -78,8 +81,10 @@ let reportedCurrentMatch = 0;
 let activeRecentDocumentId = null;
 let activeRecentPageSaveTimer = null;
 let selectedRecentDocumentId = null;
+let selectedRecentDocument = null;
 let corruptRecentDocumentId = null;
 let pendingConfirmation = null;
+let activeLoadGeneration = 0;
 
 const svgNamespace = 'http://www.w3.org/2000/svg';
 const normalHighlight = { fill: '#ffeb3b', opacity: '0.42' };
@@ -208,10 +213,15 @@ function openModal(layer, focusTarget) {
 
 function openRecentActions(record) {
   selectedRecentDocumentId = record.id;
+  selectedRecentDocument = record;
+  recentActionSheet.dataset.extension = record.extension;
   actionDocumentBadge.textContent = record.extension.toUpperCase();
   actionDocumentName.textContent = record.fileName;
   actionDocumentName.title = record.fileName;
   actionDocumentMeta.textContent = `${formatFileSize(record.size)} · ${recentPageLabel(record)}`;
+  actionDocumentDetails.hidden = true;
+  actionDocumentDetails.replaceChildren();
+  actionInfoButton.setAttribute('aria-expanded', 'false');
   openModal(recentActionSheet, actionOpenButton);
 }
 
@@ -393,7 +403,7 @@ function showDocumentUi(fileName) {
   viewerToolbar.hidden = false;
   documentTitleElement.textContent = fileName;
   documentTitleElement.title = fileName;
-  homeButton.disabled = true;
+  homeButton.disabled = false;
   openAnotherButton.disabled = true;
   openSearchButton.disabled = true;
   resetSearchUi();
@@ -432,15 +442,16 @@ function scheduleRecentPageSave() {
 }
 
 async function showHome() {
+  activeLoadGeneration += 1;
+  pagePriorityObserver?.disconnect();
+  pagePriorityObserver = null;
+  prioritizePageWindow = null;
   await persistReadingPosition();
   activeRecentDocumentId = null;
   resetSearchUi();
   currentDocument?.free();
   currentDocument = null;
   documentReady = false;
-  pagePriorityObserver?.disconnect();
-  pagePriorityObserver = null;
-  prioritizePageWindow = null;
   resetPageNavigation(0);
   pagesElement.replaceChildren();
   statusElement.hidden = true;
@@ -555,6 +566,9 @@ async function openRecentDocument(id) {
       record.fileName,
       { restorePage: record.lastPage || 1 },
     );
+    if (result?.cancelled) {
+      return;
+    }
     if (!result?.ok) {
       const renderingError = result?.error || new Error('문서를 읽을 수 없습니다.');
       await showHome();
@@ -573,11 +587,10 @@ async function openRecentDocument(id) {
 }
 
 startOpenButton.addEventListener('click', openFilePicker);
+emptyOpenButton.addEventListener('click', openFilePicker);
 openAnotherButton.addEventListener('click', openFilePicker);
 homeButton.addEventListener('click', () => {
-  if (!homeButton.disabled) {
-    void showHome();
-  }
+  void showHome();
 });
 documentInput.addEventListener('change', () => {
   const file = documentInput.files?.[0];
@@ -614,16 +627,37 @@ actionOpenButton.addEventListener('click', () => {
   }
 });
 
+actionInfoButton.addEventListener('click', () => {
+  if (!selectedRecentDocument) {
+    return;
+  }
+  const willShow = actionDocumentDetails.hidden;
+  if (willShow) {
+    const opened = new Intl.DateTimeFormat('ko-KR', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(new Date(selectedRecentDocument.openedAt));
+    actionDocumentDetails.textContent = [
+      `형식 ${selectedRecentDocument.extension.toUpperCase()}`,
+      `크기 ${formatFileSize(selectedRecentDocument.size)}`,
+      `마지막으로 연 시간 ${opened}`,
+      recentPageLabel(selectedRecentDocument),
+      '저장 위치 이 기기',
+    ].join(' · ');
+  }
+  actionDocumentDetails.hidden = !willShow;
+  actionInfoButton.setAttribute('aria-expanded', String(willShow));
+});
+
 actionDeleteButton.addEventListener('click', async () => {
   const id = selectedRecentDocumentId;
-  const fileName = actionDocumentName.textContent;
   closeModal(recentActionSheet);
   if (!id) {
     return;
   }
   const accepted = await requestConfirmation({
     title: '이 문서를 삭제할까요?',
-    message: `${fileName}의 저장된 사본을 최근 목록에서 삭제합니다. 원본 파일은 삭제되지 않아요.`,
+    message: '최근 문서 목록에서 이 문서를 삭제합니다. 저장된 문서 데이터도 함께 삭제됩니다. 원본 파일은 삭제되지 않아요.',
     acceptLabel: '삭제',
   });
   if (accepted) {
@@ -840,10 +874,13 @@ function resetPageNavigation(pageCount) {
   }
 }
 
-function startPageTracking(pages) {
+function startPageTracking(pages, loadGeneration = activeLoadGeneration) {
   const visiblePages = new Map();
   const thresholds = Array.from({ length: 11 }, (_, index) => index / 10);
   pageTrackingObserver = new IntersectionObserver((entries) => {
+    if (loadGeneration !== activeLoadGeneration) {
+      return;
+    }
     for (const entry of entries) {
       const pageIndex = Number(entry.target.dataset.pageIndex);
       if (!Number.isInteger(pageIndex)) {
@@ -1322,6 +1359,10 @@ globalThis.loadRhwpDocumentBytes = async (
   fileName,
   { restorePage = 1 } = {},
 ) => {
+  const loadGeneration = activeLoadGeneration + 1;
+  activeLoadGeneration = loadGeneration;
+  const isCurrentLoad = () => loadGeneration === activeLoadGeneration;
+  const cancelledResult = { ok: false, cancelled: true };
   const loadStartedAt = performance.now();
   showStatus('문서를 준비하는 중...');
   post('progress', {
@@ -1355,7 +1396,7 @@ globalThis.loadRhwpDocumentBytes = async (
     const pageCount = currentDocument.pageCount();
     const pages = createPagePlaceholders(pageCount);
     resetPageNavigation(pageCount);
-    startPageTracking(pages);
+    startPageTracking(pages, loadGeneration);
     const restorePageIndex = pageCount > 0
       ? Math.min(pageCount - 1, Math.max(0, Number(restorePage) - 1 || 0))
       : -1;
@@ -1368,6 +1409,9 @@ globalThis.loadRhwpDocumentBytes = async (
     let nextSequentialPage = initialPageBatchSize;
 
     const enqueuePriorityWindow = (targetPageIndex) => {
+      if (!isCurrentLoad()) {
+        return;
+      }
       for (let pageIndex = Math.max(0, targetPageIndex - 1);
         pageIndex <= Math.min(pageCount - 1, targetPageIndex + 1);
         pageIndex += 1) {
@@ -1385,6 +1429,9 @@ globalThis.loadRhwpDocumentBytes = async (
 
     if (typeof IntersectionObserver === 'function') {
       pagePriorityObserver = new IntersectionObserver((entries) => {
+        if (!isCurrentLoad()) {
+          return;
+        }
         for (const entry of entries) {
           if (!entry.isIntersecting) {
             continue;
@@ -1401,8 +1448,8 @@ globalThis.loadRhwpDocumentBytes = async (
     }
 
     const renderPage = (pageIndex) => {
-      if (completedPages.has(pageIndex)) {
-        return;
+      if (!isCurrentLoad() || completedPages.has(pageIndex)) {
+        return false;
       }
 
       const page = pages[pageIndex];
@@ -1414,7 +1461,11 @@ globalThis.loadRhwpDocumentBytes = async (
         svgTextIndexes[pageIndex] = buildSvgTextIndex(page, pageIndex);
         if (!restoreApplied && pageIndex === restorePageIndex) {
           restoreApplied = true;
-          requestAnimationFrame(() => scrollToPage(restorePageIndex));
+          requestAnimationFrame(() => {
+            if (isCurrentLoad()) {
+              scrollToPage(restorePageIndex);
+            }
+          });
         }
       } catch (error) {
         const message = `${pageIndex + 1}페이지 렌더링 오류: `
@@ -1441,6 +1492,7 @@ globalThis.loadRhwpDocumentBytes = async (
           pageCount,
         );
       }
+      return true;
     };
 
     const takeNextPage = () => {
@@ -1471,6 +1523,9 @@ globalThis.loadRhwpDocumentBytes = async (
           + `${(performance.now() - loadStartedAt).toFixed(1)} ms`,
       );
       await yieldToBrowser();
+      if (!isCurrentLoad()) {
+        return cancelledResult;
+      }
 
       for (let pageIndex = 1; pageIndex < initialPageCount; pageIndex += 1) {
         renderPage(pageIndex);
@@ -1482,9 +1537,12 @@ globalThis.loadRhwpDocumentBytes = async (
         );
       }
       await yieldToBrowser();
+      if (!isCurrentLoad()) {
+        return cancelledResult;
+      }
     }
 
-    while (completedPageCount < pageCount) {
+    while (isCurrentLoad() && completedPageCount < pageCount) {
       for (let batchIndex = 0;
         batchIndex < backgroundPageBatchSize;
         batchIndex += 1) {
@@ -1495,6 +1553,10 @@ globalThis.loadRhwpDocumentBytes = async (
         renderPage(pageIndex);
       }
       await yieldToBrowser();
+    }
+
+    if (!isCurrentLoad()) {
+      return cancelledResult;
     }
 
     pagePriorityObserver?.disconnect();
@@ -1530,6 +1592,9 @@ globalThis.loadRhwpDocumentBytes = async (
     post('rendered', result);
     return { ok: true, ...result };
   } catch (error) {
+    if (!isCurrentLoad()) {
+      return cancelledResult;
+    }
     reportRenderingError(error);
     return { ok: false, error };
   }
